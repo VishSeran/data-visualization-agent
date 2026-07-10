@@ -1,7 +1,6 @@
 import pandas as pd
-
 from config.logger import get_logger
-from urllib.parse import urlparse
+
 
 logger = get_logger("data-extract")
 

@@ -1,1 +1,1 @@
-LLM_MODEL_NAME = "meta-llama/Llama-3.3-70B-Instruct" 
+LLM_MODEL_NAME = "Qwen/Qwen2.5-Coder-7B-Instruct" 
