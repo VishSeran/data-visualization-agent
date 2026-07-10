@@ -1,4 +1,4 @@
-from langchain_huggingface import ChatHuggingFace
+from langchain_huggingface import ChatHuggingFace, HuggingFacePipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from transformers.pipelines import pipeline
 from config.logger import get_logger
@@ -20,6 +20,11 @@ class LLMModel:
             self.device =torch.device("cuda" if torch.cuda.is_available() else "cpu")
             logger.info("Device loaded successfully")
             
+            logger.info("Loading tokenizer...")
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            logger.info("tokenizer loaded")
+            
+            logger.info("Loading quantization config...")
             bits_and_bytes_config = BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
@@ -27,12 +32,30 @@ class LLMModel:
                 bnb_4bit_compute_dtype=torch.float16
             )
             
-            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-            
+            logger.info("Loading model...")
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name,
-                quantization_config = bits_and_bytes_config
-            ).to(self.device)
+                quantization_config = bits_and_bytes_config,
+                device_map="auto"
+            )
+            logger.info("Model loaded")
+            
+            logger.info("Creating pipeline...")
+            pipe = pipeline(
+                "text-generation",
+                model = self.model,
+                tokenizer = self.tokenizer,
+                max_new_tokens = 256,
+                temperature = 0,
+                do_sample=False
+            )
+            
+            llm = HuggingFacePipeline(
+                pipeline=pipe
+            )
+            
+            self.chat_llm = ChatHuggingFace(llm=llm)
+            logger.info("LLM loaded successfully")
              
         except ValueError as e:
             logger.error(f"Value error: {e}")
