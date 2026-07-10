@@ -30,13 +30,13 @@ class DataClass:
         
         try:
             result = urlparse(url)
-            return all(result.scheme,)
+            return all([result.scheme, result.netloc])
                 
         except ValueError as e:
             logger.error(f"Value error: {e}")
-            raise
+            return False
 
         except Exception as e:
             logger.error(f"Error in URL check: {e}")
-            raise
+            return False
             
