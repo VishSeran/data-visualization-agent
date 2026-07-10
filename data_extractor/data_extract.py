@@ -14,9 +14,7 @@ class DataClass:
             if not csv_path:
                 raise ValueError("CSV URL is required to process")
             
-            if urllib.parse
-            
-            
+            self.data_frame = self.load_csv(csv_path)
             
         except ValueError as e:
             logger.error(f"Value error: {e}")
@@ -26,17 +24,18 @@ class DataClass:
             logger.error(f"Error in data class initialization: {e}")
             raise
         
-    def is_url(self, url):
+    def load_csv(self, csv_path):
         
         try:
-            result = urlparse(url)
-            return all([result.scheme, result.netloc])
+            df = pd.read_csv(csv_path)
+            logger.info("CSV loaded successfully")
+            return df
                 
         except ValueError as e:
             logger.error(f"Value error: {e}")
             return False
 
         except Exception as e:
-            logger.error(f"Error in URL check: {e}")
+            logger.error(f"Error in load csv file: {e}")
             return False
             
