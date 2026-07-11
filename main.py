@@ -1,6 +1,7 @@
 
 from app import Application
 from config.logger import get_logger
+import gradio as gr
 
 
 logger = get_logger("main")
@@ -33,3 +34,55 @@ def chatbot(file, query, intermediate_steps):
     except Exception as e:
         logger.error(f"Error in main: {e}")
         raise
+    
+
+import gradio as gr
+
+def gradio_interface():
+
+    with gr.Blocks() as interface:
+
+        gr.Markdown("""
+        # 📊 Pandas AI Agent
+        
+        Upload a CSV dataset and ask questions about your data.
+        """)
+
+        file_input = gr.File(
+            label="Upload a CSV file",
+            file_types=[".csv"]
+        )
+
+        question_input = gr.Textbox(
+            label="Type your question here"
+        )
+
+        intermediate_checkbox = gr.Checkbox(
+            label="Return Intermediate Steps"
+        )
+
+        response_output = gr.Textbox(
+            label="Response"
+        )
+
+        intermediate_output = gr.Textbox(
+            label="Intermediate Steps (Optional)",
+            lines=10
+        )
+
+        submit_btn = gr.Button("Ask")
+
+        submit_btn.click(
+            fn=chatbot,
+            inputs=[
+                file_input,
+                question_input,
+                intermediate_checkbox
+            ],
+            outputs=[
+                response_output,
+                intermediate_output
+            ]
+        )
+
+    return interface

@@ -4,6 +4,7 @@ from data_extractor.data_extract import DataClass
 from model_config.llm_model import LLMModel
 from agent.agent import Agent
 
+
 logger = get_logger("app")
 
 class Application:
@@ -56,6 +57,6 @@ class Application:
             raise
         
         
-        
+
         
     
