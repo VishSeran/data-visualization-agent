@@ -10,6 +10,8 @@ class Agent:
         
         try:
             
+            self.response = None
+            
             self.agent = create_pandas_dataframe_agent(
                 llm=llm,
                 df=data_frame,
@@ -35,10 +37,10 @@ class Agent:
                 raise ValueError("Query is empty or none")
             
             logger.info("Response is fetching...")
-            response = self.agent.invoke(query)
+            self.response = self.agent.invoke(query)
             logger.info("Response fetched")
             
-            return response['output']
+            return self.response['output']
         
         except ValueError as e:
             logger.error(f"Value error: {e}")
@@ -48,3 +50,16 @@ class Agent:
             logger.error(f"Error in agent response: {e}")
             raise
         
+    def return_intermediate_steps(self):
+        
+        try:
+            
+            return self.response['intermediate_steps'][-1][0].tool_input.replace("; ", '\n')
+        
+        except ValueError as e:
+            logger.error(f"Value error: {e}")
+            raise
+        
+        except Exception as e:
+            logger.error(f"Error in returning intermediate steps in response: {e}")
+            raise
