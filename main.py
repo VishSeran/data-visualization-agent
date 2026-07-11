@@ -86,3 +86,7 @@ def gradio_interface():
         )
 
     return interface
+
+if __name__ == "__main__":
+    interface = gradio_interface()
+    interface.launch()
