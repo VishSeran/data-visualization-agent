@@ -8,36 +8,54 @@ from agent.agent import Agent
 
 logger = get_logger("main")
 
-def init(dataset_path, query):
+class Application:
     
-    try:
+    def __init__(self, dataset_path):
         
-        if not dataset_path:
-            raise ValueError("Dataset path is not declared")
+        try:
+            
+            if not dataset_path:
+                raise ValueError("Dataset path is not declared")
+            
+            logger.info("Dataset loading...")
+            dataset = DataClass(dataset_path)
+            
+            logger.info("LLM loading...")
+            llm_model = LLMModel()
+            
+            logger.info("Panda Agent loading...")
+            self.agent = Agent(llm_model,dataset)
         
-        if not query:
-            raise ValueError("User query is missing")
-        
-        logger.info("Dataset loading...")
-        dataset = DataClass(dataset_path)
-        
-        logger.info("LLM loading...")
-        llm_model = LLMModel()
-        
-        logger.info("Panda Agent loading...")
-        agent = Agent(llm_model,dataset)
-        
-        return agent
-    
-    except ValueError as e:
-            logger.error(f"Value error: {e}")
-            raise
+        except ValueError as e:
+                logger.error(f"Value error: {e}")
+                raise
 
-    except Exception as e:
-        logger.error(f"Error in agent initialization: {e}")
-        raise
-    
+        except Exception as e:
+            logger.error(f"Error in agent initialization: {e}")
+            raise
         
+            
+    def ask(self,query,return_intermediate:bool = False):
+        
+        try:
+            
+            if not query:
+                raise ValueError("query is empty or none")
+            
+            response = self.agent.agent_response(query)
+            
+            if return_intermediate:
+                steps = self.agent.return_intermediate_steps()
+                
+            return response, steps
+            
+        except ValueError as e:
+                logger.error(f"Value error: {e}")
+                raise
+
+        except Exception as e:
+            logger.error(f"Error in ask from agent: {e}")
+            raise
         
         
         

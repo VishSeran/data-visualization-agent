@@ -11,6 +11,7 @@ class Agent:
         try:
             
             self.response = None
+            self.steps = None
             
             self.agent = create_pandas_dataframe_agent(
                 llm=llm,
@@ -54,7 +55,8 @@ class Agent:
         
         try:
             
-            return self.response['intermediate_steps'][-1][0].tool_input.replace("; ", '\n')
+            self.steps = self.response['intermediate_steps'][-1][0].tool_input.replace("; ", '\n')
+            return self.steps
         
         except ValueError as e:
             logger.error(f"Value error: {e}")
