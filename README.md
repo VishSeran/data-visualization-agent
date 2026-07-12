@@ -12,8 +12,6 @@ This project turns a pandas DataFrame into a conversational data analyst. Instea
 
 Under the hood, LangChain's `create_pandas_dataframe_agent` uses an LLM to translate your question into executable Python/pandas code, runs it against the DataFrame, and returns both the answer and (when relevant) a chart.
 
-> **Note:** This project is adapted from an IBM Skills Network lab that originally used IBM watsonx.ai. This version has been modified to use **`langchain-huggingface`**, letting you run the same workflow with open models hosted on the Hugging Face Hub (or a local Hugging Face pipeline) instead of watsonx.
-
 ## Features
 
 - 💬 Ask questions about your dataset in plain English
@@ -97,16 +95,6 @@ agent.invoke("Generate a pie chart to display the average value of Walc for each
 agent.invoke("Create box plots to analyze the relationship between freetime and G3.")
 agent.invoke("Generate scatter plots to examine the correlation between Dalc and G3, and between Walc and G3.")
 ```
-
-## Exercises Included
-
-1. Relationship between parental education level and student grades
-2. Impact of internet access at home on grades
-3. Exploring the LLM-generated code behind a scatter plot of absences vs. grades
-
-## Acknowledgements
-
-Original lab content created for IBM Skills Network by Kang Wang, Wojciech Fulmyk, and Ricky Shi. This version has been adapted to replace IBM watsonx.ai with `langchain-huggingface` for an open-model workflow.
 
 ## License
 
