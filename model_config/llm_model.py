@@ -47,7 +47,9 @@ class LLMModel:
                 return_full_text=False,
             )
 
-            self.llm = HuggingFacePipeline(pipeline=pipe)
+            llm = HuggingFacePipeline(pipeline=pipe)
+
+            self.chat_llm = ChatHuggingFace(llm=llm)
             logger.info("LLM loaded successfully")
 
         except ValueError as e:
