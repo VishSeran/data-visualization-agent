@@ -6,14 +6,12 @@ logger = get_logger("data-extract")
 
 class DataClass:
     
-    def __init__(self, csv_path):
+    def __init__(self):
         
         try:
+    
             
-            if not csv_path:
-                raise ValueError("CSV URL is required to process")
-            
-            self.data_frame = self.load_csv(csv_path)
+            self.data_frame = None
             
         except ValueError as e:
             logger.error(f"Value error: {e}")
@@ -26,9 +24,13 @@ class DataClass:
     def load_csv(self, csv_path):
         
         try:
-            df = pd.read_csv(csv_path)
+            
+            if not csv_path:
+                raise ValueError("CSV URL is required to process")
+            
+            self.data_frame = pd.read_csv(csv_path)
             logger.info("CSV loaded successfully")
-            return df
+            return self.data_frame
                 
         except ValueError as e:
             logger.error(f"Value error: {e}")

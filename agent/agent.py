@@ -1,4 +1,5 @@
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from config.config import PREFIX
 
 from config.logger import get_logger 
 
@@ -10,15 +11,21 @@ class Agent:
         
         try:
             
+            
+            
             self.response = None
             self.steps = None
             
             self.agent = create_pandas_dataframe_agent(
                 llm=llm,
                 df=data_frame,
+                prefix=PREFIX,
                 verbose=True,
                 return_intermediate_steps=True,
-                handle_parsing_errors=True,
+                allow_dangerous_code=True,
+                agent_executor_kwargs={
+                    "handle_parsing_errors": True
+                }
                 
             )
         
