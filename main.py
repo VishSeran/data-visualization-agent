@@ -36,7 +36,7 @@ def chatbot(file, query, intermediate_steps):
         raise
     
 
-import gradio as gr
+
 
 def gradio_interface():
 

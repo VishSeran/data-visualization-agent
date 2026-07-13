@@ -17,13 +17,14 @@ class Application:
                 raise ValueError("Dataset path is not declared")
             
             logger.info("Dataset loading...")
-            dataset = DataClass(dataset_path)
+            dataset_class = DataClass()
+            dataset = dataset_class.load_csv(dataset_path)
             
             logger.info("LLM loading...")
             llm_model = LLMModel()
             
             logger.info("Panda Agent loading...")
-            self.agent = Agent(llm_model,dataset)
+            self.agent = Agent(llm_model.llm,dataset)
         
         except ValueError as e:
                 logger.error(f"Value error: {e}")
